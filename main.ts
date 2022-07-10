@@ -1,14 +1,4 @@
-function playAlert () {
-    music.playTone(523, music.beat(BeatFraction.Whole))
-}
 function sendAlert () {
-    basic.showLeds(`
-        . . . . .
-        . . . . .
-        . . . . .
-        . . . . .
-        . . . . .
-        `)
     earlyFireDetection.sendToIFTTT(
     "alertaDoYourBit",
     "i6eXTfs6U4hv0qW6bok_jj9UNQZHbM65bwCA9xwHAyh",
@@ -16,7 +6,14 @@ function sendAlert () {
     t,
     h
     )
-    basic.showIcon(IconNames.Target)
+    basic.showLeds(`
+        . . # . .
+        . . # . .
+        . # . # .
+        # # # # #
+        # . . . #
+        `)
+    basic.pause(2000)
 }
 function sendThingSpeak () {
     basic.showLeds(`
@@ -38,22 +35,20 @@ function sendThingSpeak () {
     0
     )
     basic.showLeds(`
-        . # . . .
-        . # # . .
-        . # # # .
-        . # # . .
-        . # . . .
+        # # # # #
+        . . # . .
+        . . # . .
+        . . # . .
+        . . # . .
         `)
+    basic.pause(2000)
 }
 input.onButtonPressed(Button.A, function () {
+    thingspeakChannel = "BZWIKCNTMPL35G2P"
+    t = "21"
+    h = "83"
+    geo = "z.8"
     sendThingSpeak()
-    basic.showLeds(`
-        . . # . .
-        . . # . .
-        . # . # .
-        # # # # #
-        # . . . #
-        `)
 })
 function wifiConnect () {
     earlyFireDetection.setupWifi(
@@ -63,31 +58,32 @@ function wifiConnect () {
     "doyourbit",
     "microbitRules"
     )
-    if (earlyFireDetection.wifiOK()) {
-        basic.showLeds(`
-            . . . . .
-            . . . . .
-            . . # . .
-            . . . . .
-            . . . . .
-            `)
-        basic.showIcon(IconNames.Yes)
-    } else {
-        basic.showIcon(IconNames.No)
-        wifiConnect()
-    }
+    basic.pause(2000)
 }
 input.onButtonPressed(Button.AB, function () {
-    sendAlert()
-    basic.showLeds(`
-        # # # . .
-        # . . . .
-        # . . . .
-        # . . . .
-        # # # . .
-        `)
+    earlyFireDetection.sendToIFTTT(
+    "alertaDoYourBit",
+    "i6eXTfs6U4hv0qW6bok_jj9UNQZHbM65bwCA9xwHAyh",
+    "test_Alert",
+    "90",
+    "5"
+    )
 })
 radio.onReceivedString(function (receivedString) {
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        `)
+    basic.showLeds(`
+        # # # # .
+        # . . # .
+        # # # # .
+        # . # . .
+        # . . # .
+        `)
     values = receivedString.split(";")
     t = values[0]
     h = values[1]
@@ -97,28 +93,20 @@ radio.onReceivedString(function (receivedString) {
     } else {
         thingspeakChannel = "U9RKX7N2LT2U9PIX"
     }
-    if (earlyFireDetection.wifiOK()) {
-        sendThingSpeak()
-        evalData()
-    } else {
-        basic.showIcon(IconNames.No)
-        wifiConnect()
-    }
+    sendThingSpeak()
+    evalData()
 })
 input.onButtonPressed(Button.B, function () {
-    wifiConnect()
-    basic.showLeds(`
-        # # # . .
-        # . # . .
-        # # # # .
-        # . . # .
-        # # # # .
-        `)
+    thingspeakChannel = "U9RKX7N2LT2U9PIX"
+    t = "19"
+    h = "75"
+    geo = "f.3"
+    sendThingSpeak()
 })
 function evalData () {
     if (parseFloat(t) >= maxTemp && parseFloat(h) <= minHum) {
-        playAlert()
         sendAlert()
+        basic.showIcon(IconNames.Umbrella)
     }
 }
 let values: string[] = []
@@ -134,14 +122,8 @@ minHum = 20
 basic.showLeds(`
     . . . . .
     . . . . .
-    . . . . .
+    . . # . .
     . . . . .
     . . . . .
     `)
 wifiConnect()
-control.inBackground(function () {
-    if (earlyFireDetection.wifiOK()) {
-        basic.pause(60000)
-        wifiConnect()
-    }
-})
