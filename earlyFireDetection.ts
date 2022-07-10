@@ -1,5 +1,5 @@
 /**
- * Functions to operate earlyFireDetection module.
+ * Functions to operate earlyFireDetection.
  */
 //% weight=10 color=#035e8c icon="\uf1bb" block="earlyFireDetection"
 //% groups='["earlyFireDetection"]'
@@ -7,7 +7,7 @@ namespace earlyFireDetection {
 
     let isWifiConnected = false;
     /**
-     * Setup earlyFireDetection module ESP8266 to connect to  Wi-Fi
+     * Setup earlyFireDetection module ESP8266 for connect to  Wi-Fi
      */
     //% block="Setup Wifi|TX %txPin|RX %rxPin|Baud rate %baudrate|SSID = %ssid|Password = %passwd"
     //% group="early_Wifi"
@@ -100,11 +100,11 @@ namespace earlyFireDetection {
      */
     //% block="Send Data to your IFTTT Event|Event %event|Key %key|value1 %value1|value2 %value2|value3 %value3"
     //% group="early_Wifi"
-    //% event.defl="your Event"
-    //% key.defl="your Key"
-    //% value1.defl="hello"
-    //% value2.defl="micro"
-    //% value3.defl="bit"
+    //% event.defl="event Name"
+    //% key.defl="IFTTT Key"
+    //% value1.defl="value1"
+    //% value2.defl="value2"
+    //% value3.defl="value3"
     export function sendToIFTTT(event: string, key: string, value1: string, value2: string, value3: string) {
         let result = 0
         let retry = 2

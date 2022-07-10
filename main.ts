@@ -43,13 +43,6 @@ function sendThingSpeak () {
         `)
     basic.pause(2000)
 }
-input.onButtonPressed(Button.A, function () {
-    thingspeakChannel = "BZWIKCNTMPL35G2P"
-    t = "21"
-    h = "83"
-    geo = "z.8"
-    sendThingSpeak()
-})
 function wifiConnect () {
     earlyFireDetection.setupWifi(
     SerialPin.P0,
@@ -60,15 +53,6 @@ function wifiConnect () {
     )
     basic.pause(2000)
 }
-input.onButtonPressed(Button.AB, function () {
-    earlyFireDetection.sendToIFTTT(
-    "alertaDoYourBit",
-    "i6eXTfs6U4hv0qW6bok_jj9UNQZHbM65bwCA9xwHAyh",
-    "test_Alert",
-    "90",
-    "5"
-    )
-})
 radio.onReceivedString(function (receivedString) {
     basic.showLeds(`
         . . . . .
@@ -95,13 +79,6 @@ radio.onReceivedString(function (receivedString) {
     }
     sendThingSpeak()
     evalData()
-})
-input.onButtonPressed(Button.B, function () {
-    thingspeakChannel = "U9RKX7N2LT2U9PIX"
-    t = "19"
-    h = "75"
-    geo = "f.3"
-    sendThingSpeak()
 })
 function evalData () {
     if (parseFloat(t) >= maxTemp && parseFloat(h) <= minHum) {
